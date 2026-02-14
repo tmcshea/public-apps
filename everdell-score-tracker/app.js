@@ -15,8 +15,8 @@ const EverdellApp = {
     SEASONS: ['Winter', 'Spring', 'Summer', 'Autumn'],
     SEASON_WORKERS: {
         'Winter': 2,
-        'Spring': 4,
-        'Summer': 6,
+        'Spring': 3,
+        'Summer': 4,
         'Autumn': 6
     },
     
@@ -236,15 +236,27 @@ const EverdellApp = {
                     <label><span class="emoji">✨</span> Purple Bonuses</label>
                     <input type="number" class="purple-input" min="0" value="0">
                 </div>
-                <div class="score-field">
+                <div class="score-field journey-field">
                     <label><span class="emoji">🗺️</span> Journey</label>
-                    <select class="journey-input">
-                        <option value="0">None</option>
-                        <option value="2">2 pts</option>
-                        <option value="3">3 pts</option>
-                        <option value="4">4 pts</option>
-                        <option value="5">5 pts</option>
-                    </select>
+                    <div class="journey-container">
+                        <div class="journey-option">
+                            <input type="checkbox" class="journey-check-3" id="${playerName}-journey-3">
+                            <label for="${playerName}-journey-3">3 pts</label>
+                        </div>
+                        <div class="journey-option">
+                            <input type="checkbox" class="journey-check-4" id="${playerName}-journey-4">
+                            <label for="${playerName}-journey-4">4 pts</label>
+                        </div>
+                        <div class="journey-option">
+                            <input type="checkbox" class="journey-check-5" id="${playerName}-journey-5">
+                            <label for="${playerName}-journey-5">5 pts</label>
+                        </div>
+                        <div class="journey-option journey-2pt">
+                            <label for="${playerName}-journey-2">2 pts ×</label>
+                            <input type="number" class="journey-2pt-count" id="${playerName}-journey-2" min="0" max="10" value="0">
+                        </div>
+                    </div>
+                    <div class="journey-total">Total: <span class="journey-total-value">0</span> pts</div>
                 </div>
             </div>
             
@@ -301,7 +313,13 @@ const EverdellApp = {
         });
         
         // Score inputs
-        card.querySelectorAll('.cards-input, .tokens-input, .purple-input, .journey-input, .basic-event-check').forEach(input => {
+        card.querySelectorAll('.cards-input, .tokens-input, .purple-input, .basic-event-check').forEach(input => {
+            input.addEventListener('change', () => this.updateTotal(card));
+            input.addEventListener('input', () => this.updateTotal(card));
+        });
+        
+        // Journey inputs
+        card.querySelectorAll('.journey-check-3, .journey-check-4, .journey-check-5, .journey-2pt-count').forEach(input => {
             input.addEventListener('change', () => this.updateTotal(card));
             input.addEventListener('input', () => this.updateTotal(card));
         });
@@ -373,7 +391,20 @@ const EverdellApp = {
         const cards = parseInt(card.querySelector('.cards-input').value) || 0;
         const tokens = parseInt(card.querySelector('.tokens-input').value) || 0;
         const purple = parseInt(card.querySelector('.purple-input').value) || 0;
-        const journey = parseInt(card.querySelector('.journey-input').value) || 0;
+        
+        // Calculate journey points
+        let journey = 0;
+        if (card.querySelector('.journey-check-3')?.checked) journey += 3;
+        if (card.querySelector('.journey-check-4')?.checked) journey += 4;
+        if (card.querySelector('.journey-check-5')?.checked) journey += 5;
+        const journey2Count = parseInt(card.querySelector('.journey-2pt-count')?.value) || 0;
+        journey += journey2Count * 2;
+        
+        // Update journey total display
+        const journeyTotalElement = card.querySelector('.journey-total-value');
+        if (journeyTotalElement) {
+            journeyTotalElement.textContent = journey;
+        }
         
         // Basic events
         const basicEventChecks = card.querySelectorAll('.basic-event-check:checked');
@@ -405,7 +436,14 @@ const EverdellApp = {
         const cards = parseInt(card.querySelector('.cards-input').value) || 0;
         const tokens = parseInt(card.querySelector('.tokens-input').value) || 0;
         const purple = parseInt(card.querySelector('.purple-input').value) || 0;
-        const journey = parseInt(card.querySelector('.journey-input').value) || 0;
+        
+        // Calculate journey points
+        let journey = 0;
+        if (card.querySelector('.journey-check-3')?.checked) journey += 3;
+        if (card.querySelector('.journey-check-4')?.checked) journey += 4;
+        if (card.querySelector('.journey-check-5')?.checked) journey += 5;
+        const journey2Count = parseInt(card.querySelector('.journey-2pt-count')?.value) || 0;
+        journey += journey2Count * 2;
         
         // Basic events count
         const basicEventChecks = card.querySelectorAll('.basic-event-check:checked');
