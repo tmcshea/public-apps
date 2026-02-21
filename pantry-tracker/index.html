@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantry Tracker - Phase 1</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🥫 Pantry Tracker</h1>
+            <p class="subtitle">Tyler & Hanna's Kitchen Inventory</p>
+        </header>
+
+        <!-- Add Item Form -->
+        <section class="add-item-section">
+            <h2>Add Item</h2>
+            <form id="add-item-form">
+                <div class="form-group">
+                    <label for="item-name">Item Name *</label>
+                    <input type="text" id="item-name" required placeholder="e.g., Milk, Chicken Breast">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="item-quantity">Quantity *</label>
+                        <input type="number" id="item-quantity" min="1" value="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="item-unit">Unit</label>
+                        <select id="item-unit">
+                            <option value="count">count</option>
+                            <option value="lbs">lbs</option>
+                            <option value="oz">oz</option>
+                            <option value="gal">gal</option>
+                            <option value="qt">qt</option>
+                            <option value="pt">pt</option>
+                            <option value="cup">cup</option>
+                            <option value="pkg">pkg</option>
+                            <option value="can">can</option>
+                            <option value="box">box</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="item-category">Category *</label>
+                    <select id="item-category" required>
+                        <option value="">Select category...</option>
+                        <option value="dairy">🥛 Dairy & Eggs</option>
+                        <option value="produce">🥬 Produce</option>
+                        <option value="meat">🥩 Meat & Seafood</option>
+                        <option value="pantry">🥫 Pantry Staples</option>
+                        <option value="frozen">🧊 Frozen</option>
+                        <option value="snacks">🍿 Snacks</option>
+                        <option value="beverages">🥤 Beverages</option>
+                        <option value="condiments">🧂 Condiments & Sauces</option>
+                        <option value="baking">🍪 Baking</option>
+                        <option value="other">📦 Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="item-location">Location *</label>
+                    <select id="item-location" required>
+                        <option value="">Select location...</option>
+                        <option value="fridge">🧊 Refrigerator</option>
+                        <option value="freezer">❄️ Freezer</option>
+                        <option value="pantry">🚪 Pantry</option>
+                        <option value="cabinet">🗄️ Cabinet</option>
+                        <option value="counter">🪑 Counter</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="item-expiration">Expiration Date</label>
+                    <input type="date" id="item-expiration">
+                </div>
+
+                <div class="form-group">
+                    <label for="item-notes">Notes</label>
+                    <input type="text" id="item-notes" placeholder="Optional notes">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Add to Inventory</button>
+            </form>
+        </section>
+
+        <!-- Filter & Sort Controls -->
+        <section class="controls-section">
+            <h2>Inventory</h2>
+            <div class="controls">
+                <div class="filter-group">
+                    <label for="filter-category">Filter by Category:</label>
+                    <select id="filter-category">
+                        <option value="all">All Categories</option>
+                        <option value="dairy">🥛 Dairy & Eggs</option>
+                        <option value="produce">🥬 Produce</option>
+                        <option value="meat">🥩 Meat & Seafood</option>
+                        <option value="pantry">🥫 Pantry Staples</option>
+                        <option value="frozen">🧊 Frozen</option>
+                        <option value="snacks">🍿 Snacks</option>
+                        <option value="beverages">🥤 Beverages</option>
+                        <option value="condiments">🧂 Condiments & Sauces</option>
+                        <option value="baking">🍪 Baking</option>
+                        <option value="other">📦 Other</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filter-location">Filter by Location:</label>
+                    <select id="filter-location">
+                        <option value="all">All Locations</option>
+                        <option value="fridge">🧊 Refrigerator</option>
+                        <option value="freezer">❄️ Freezer</option>
+                        <option value="pantry">🚪 Pantry</option>
+                        <option value="cabinet">🗄️ Cabinet</option>
+                        <option value="counter">🪑 Counter</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="sort-by">Sort by:</label>
+                    <select id="sort-by">
+                        <option value="name-asc">Name (A-Z)</option>
+                        <option value="name-desc">Name (Z-A)</option>
+                        <option value="expiration-asc">Expiration (Soonest)</option>
+                        <option value="expiration-desc">Expiration (Latest)</option>
+                        <option value="category">Category</option>
+                        <option value="location">Location</option>
+                        <option value="added-desc">Recently Added</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="quick-filters">
+                <button class="btn btn-warning btn-sm" id="show-expiring">⚠️ Expiring Soon (7 days)</button>
+                <button class="btn btn-danger btn-sm" id="show-expired">🚨 Expired Items</button>
+                <button class="btn btn-secondary btn-sm" id="show-all">Show All</button>
+            </div>
+        </section>
+
+        <!-- Stats Summary -->
+        <section class="stats-section">
+            <div class="stat-card">
+                <div class="stat-value" id="total-items">0</div>
+                <div class="stat-label">Total Items</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="expiring-soon">0</div>
+                <div class="stat-label">Expiring Soon</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="expired-count">0</div>
+                <div class="stat-label">Expired</div>
+            </div>
+        </section>
+
+        <!-- Inventory List -->
+        <section class="inventory-section">
+            <div id="inventory-list" class="inventory-list">
+                <!-- Items will be inserted here by JavaScript -->
+            </div>
+            <div id="empty-state" class="empty-state">
+                <p>📦 Your pantry is empty!</p>
+                <p>Add your first item above to start tracking your inventory.</p>
+            </div>
+        </section>
+
+        <!-- Export/Import Data -->
+        <section class="data-section">
+            <h3>Data Management</h3>
+            <div class="data-controls">
+                <button class="btn btn-secondary" id="export-data">📥 Export Data (JSON)</button>
+                <button class="btn btn-secondary" id="import-data">📤 Import Data</button>
+                <input type="file" id="import-file" accept=".json" style="display: none;">
+                <button class="btn btn-danger" id="clear-all">🗑️ Clear All Data</button>
+            </div>
+        </section>
+
+        <footer>
+            <p>Phase 1: Inventory Tracker | Built for Tyler & Hanna</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
